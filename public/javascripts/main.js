@@ -1,3 +1,5 @@
+
+
 window.onload = () => {
   
 
@@ -15,4 +17,34 @@ window.onload = () => {
     lat: undefined,
     lng: undefined
   }; 
-};
+
+
+function getPlaces() {
+  axios.get("/api")
+  .then( response => {
+    placePlaces(response.data.places)
+  })
+  .catch(error => {
+    next(error)
+  })
+}
+
+getPlaces();
+
+
+function placePlaces(Places){
+    Places.forEach(function(place){
+      const center = {
+        lat: place.location.coordinates[1],
+        lng: place.location.coordinates[0]
+      };
+      const pin = new google.maps.Marker({
+        position: center,
+        map: map,
+        title: place.name
+      });
+      markers.push(pin)
+    });
+}
+
+}
